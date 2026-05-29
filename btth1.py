@@ -17,7 +17,6 @@ cart_items = [
 
 while True:
     print("\n========== SHOPEE CART MANAGEMENT SYSTEM ==========")
-
     print("[1] Xem chi tiet gio hang & Tinh tong tien")
     print("[2] Them san pham moi / Cong don so luong")
     print("[3] Cap nhat so luong san pham")
@@ -39,51 +38,39 @@ while True:
 
         for i in range(len(cart_items)):
             item = cart_items[i]
-
             product_id = item[0]
             product_name = item[1]
             quantity = item[2]
             price = item[3]
 
             subtotal = quantity * price
-
             total_quantity += quantity
             total_price += subtotal
 
-            print(
-                i + 1,
-                "|",
-                product_id,
-                "|",
-                product_name,
-                "|",
-                quantity,
-                "|",
-                f"{price:,}đ",
-                "|",
-                f"{subtotal:,}đ"
-            )
+            print(i + 1, "|", product_id, "|", product_name, "|", quantity, "|", f"{price:,}đ", "|", f"{subtotal:,}đ")
 
         print("\nTong so luong san pham:", total_quantity)
         print("TONG TIEN THANH TOAN:", f"{total_price:,}đ")
+
     elif choice == 2:
         product_id = input("Nhap ma san pham: ").strip()
         product_name = input("Nhap ten san pham: ").strip()
 
-        try:
-            quantity = int(input("Nhap so luong: "))
-            price = int(input("Nhap don gia: "))
+        str_quantity = input("Nhap so luong: ").strip()
+        str_price = input("Nhap don gia: ").strip()
 
-            if quantity <= 0 or price < 0:
-                print("So luong hoac don gia khong hop le!")
-                continue
+        if not str_quantity.isdigit() or not str_price.isdigit():
+            print("Du lieu nhap phai la so nguyen!")
+            continue
 
-        except:
-            print("Du lieu nhap khong hop le!")
+        quantity = int(str_quantity)
+        price = int(str_price)
+
+        if quantity <= 0 or price < 0:
+            print("So luong hoac don gia khong hop le!")
             continue
 
         found = False
-
         for item in cart_items:
             if item[0] == product_id:
                 item[2] += quantity
@@ -94,18 +81,20 @@ while True:
         if found == False:
             cart_items.append([product_id, product_name, quantity, price])
             print("Them san pham thanh cong!")
+
     elif choice == 3:
         product_id = input("Nhap ma san pham can cap nhat: ").strip()
+        str_new_quantity = input("Nhap so luong moi: ").strip()
 
-        try:
-            new_quantity = int(input("Nhap so luong moi: "))
-
-            if new_quantity <= 0:
-                print("So luong khong hop le!")
-                continue
-        except:
-            print("Du lieu khong hop le!")
+        if not str_new_quantity.isdigit():
+            print("So luong moi phai la so nguyen!")
             continue
+
+        new_quantity = int(str_new_quantity)
+        if new_quantity <= 0:
+            print("So luong khong hop le!")
+            continue
+
         found = False
         for item in cart_items:
             if item[0] == product_id:
@@ -116,9 +105,9 @@ while True:
 
         if found == False:
             print("Ma san pham khong ton tai trong gio hang!")
+
     elif choice == 4:
         product_id = input("Nhap ma san pham can xoa: ").strip()
-
         found = False
 
         for item in cart_items:
@@ -130,6 +119,7 @@ while True:
 
         if found == False:
             print("Ma san pham khong ton tai trong gio hang!")
+
     elif choice == 5:
         print("Da thoat chuong trinh!")
         break
